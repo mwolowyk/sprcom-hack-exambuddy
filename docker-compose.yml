@@ -1,0 +1,11 @@
+version: "3"
+services:
+  db:
+    image: neo4j:3.4.7
+    volumes:
+      - $HOME/neo4j/data:/data
+      - ./data/import:/var/lib/neo4j/import
+      - ./data/plugins:/var/lib/neo4j/plugins
+    ports:
+      - 7474:7474
+      - 7687:7687

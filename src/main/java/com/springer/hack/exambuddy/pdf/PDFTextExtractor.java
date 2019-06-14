@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,8 +26,10 @@ public class PDFTextExtractor {
                     .map(this::extractText)
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());
-            document.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
             try {
                 document.close();
             } catch (IOException e2) {

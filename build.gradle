@@ -17,16 +17,15 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-data-neo4j'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.1'
+    implementation 'org.apache.pdfbox:pdfbox:2.0.1'
     implementation 'org.projectlombok:lombok:1.18.6'
-    implementation 'io.springfox:springfox-swagger2:2.7.0'
-    compile 'io.springfox:springfox-swagger-ui:2.7.0'
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 
     implementation 'commons-io:commons-io:2.5'
-    implementation group: 'com.google.guava', name: 'guava', version: '27.1-jre'
-    implementation group: 'org.apache.commons', name: 'commons-csv', version: '1.6'
+    implementation 'org.apache.commons:commons-csv:1.6'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation group: 'org.neo4j.test', name: 'neo4j-harness', version: '3.5.5'
-    testImplementation group: 'org.neo4j', name: 'neo4j-ogm-embedded-driver', version: '3.1.9'
+    testImplementation 'org.neo4j.test:neo4j-harness:3.5.5'
+    testImplementation 'org.neo4j:neo4j-ogm-embedded-driver:3.1.9'
 }

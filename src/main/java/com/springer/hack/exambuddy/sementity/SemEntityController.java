@@ -1,6 +1,7 @@
 package com.springer.hack.exambuddy.sementity;
 
 import com.springer.hack.exambuddy.external.dbpediaspotlight.DBPediaSpotlightService;
+import com.springer.hack.exambuddy.pdf.PDFEntityExtractor;
 import com.springer.hack.exambuddy.pdf.PDFTextExtractor;
 import com.springer.hack.exambuddy.pdf.PageWithEntities;
 import com.springer.hack.exambuddy.utils.Utils;
@@ -21,12 +22,15 @@ public class SemEntityController {
 
     private final DBPediaSpotlightService dbPediaSpotlightService;
 
+    private final PDFEntityExtractor pdfEntityExtractor;
+
     private Logger log = LoggerFactory.getLogger(SemEntityController.class);
 
 
-    public SemEntityController(PDFTextExtractor pdfTextExtractor, DBPediaSpotlightService dbPediaSpotlightService) {
+    public SemEntityController(PDFTextExtractor pdfTextExtractor, DBPediaSpotlightService dbPediaSpotlightService, PDFEntityExtractor pdfEntityExtractor) {
         this.pdfTextExtractor = pdfTextExtractor;
         this.dbPediaSpotlightService = dbPediaSpotlightService;
+        this.pdfEntityExtractor = pdfEntityExtractor;
     }
 
     @RequestMapping(value = "text/{text}", method = RequestMethod.GET)
@@ -44,34 +48,14 @@ public class SemEntityController {
     public List<PageWithEntities> getSemEntitiesFromFile(@RequestPart final MultipartFile file,
                                                          @RequestParam(required = false) int fromPage,
                                                          @RequestParam(required = false) int toPage) {
+
         List<PageWithEntities> result = new ArrayList<>();
-        List<String> content = null;
         try {
-            content = pdfTextExtractor.extractText(file.getInputStream());
-            int pageNr = fromPage;
-            for(String contentString : content){
-                contentString = Utils.normalizeString(contentString);
-                System.out.println("<<<<< PAGE >>>>> \n " + '<' + contentString + '>');
-                PageWithEntities pageWithEntities = new PageWithEntities(contentString, pageNr);
-                try{
-                    List<SemEntity> semEntities = dbPediaSpotlightService.extractSemEntities(contentString).join();
-                    System.out.println("For string  " + contentString+ "\n ---- Entities: ----- for string ");
-                    pageWithEntities.setSemEntities(semEntities);
-                    semEntities.forEach(semEntity -> System.out.println(semEntity.getSurfaceForm() + " =>  " + semEntity.getUri()));
-                    result.add(pageWithEntities);
-                }
-                catch(Exception ex){
-                    ex.printStackTrace();
-                }
-                pageNr++;
-                if(pageNr > toPage){
-                    break;
-                }
-            }
+
+            result = pdfEntityExtractor.extractEntities(file.getInputStream(), fromPage, toPage);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return result;
     }
 

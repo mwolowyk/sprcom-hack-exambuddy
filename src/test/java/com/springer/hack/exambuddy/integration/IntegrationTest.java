@@ -5,6 +5,7 @@ import com.springer.hack.exambuddy.external.dbpediaspotlight.DBPediaSpotlightSer
 import com.springer.hack.exambuddy.pdf.PDFTextExtractor;
 import com.springer.hack.exambuddy.sementity.SemEntity;
 import com.springer.hack.exambuddy.utils.Utils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,6 +21,7 @@ public class IntegrationTest extends BaseTest {
     private DBPediaSpotlightService dbPediaSpotlightService;
 
     @Test
+    @Ignore
     public void getEntitiesFromPdf() {
         InputStream pdfFileStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("test.pdf");
         List<String> content = pdfTextExtractor.extractText(pdfFileStream);

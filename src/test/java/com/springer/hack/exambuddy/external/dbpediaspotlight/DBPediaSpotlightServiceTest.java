@@ -2,10 +2,12 @@ package com.springer.hack.exambuddy.external.dbpediaspotlight;
 
 
 import com.springer.hack.exambuddy.BaseTest;
+import com.springer.hack.exambuddy.pdf.PDFEntityExtractor;
 import com.springer.hack.exambuddy.sementity.SemEntity;
 import com.springer.hack.exambuddy.sementity.SemEntityRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import scala.language;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class DBPediaSpotlightServiceTest extends BaseTest {
     @Test
     public void extractSemanticEntities() {
         String value = "Cotton is a soft, fluffy staple fiber that grows in a boll, or protective case, around the seeds of the cotton plants of the genus Gossypium in the mallow family Malvaceae. The fiber is almost pure cellulose. Under natural conditions, the cotton bolls will increase the dispersal of the seeds.";
-        List<SemEntity> semEntities = dbPediaSpotlightService.extractSemEntities(value).join();
+        List<SemEntity> semEntities = dbPediaSpotlightService.extractSemEntities(value, DBPediaSpotlightService.Language.en).join();
         assertThat(semEntities).isNotEmpty();
 
         List<SemEntity> foundSemEntities = semEntityRepository.findAllByType(SemEntity.SemEntityType.DBPEDIA);

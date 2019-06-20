@@ -23,7 +23,7 @@ public abstract class BaseRestService {
             url.append(":").append(properties.getPort());
         }
 
-        url.append(properties.getPath());
+//        url.append(properties.getPath());
 
         baseUrl = url.toString();
     }

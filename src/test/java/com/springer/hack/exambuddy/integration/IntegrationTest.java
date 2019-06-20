@@ -8,6 +8,7 @@ import com.springer.hack.exambuddy.utils.Utils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import scala.language;
 
 import java.io.InputStream;
 import java.util.List;
@@ -29,7 +30,7 @@ public class IntegrationTest extends BaseTest {
             contentString = Utils.normalizeString(contentString);
             System.out.println("<<<<< PAGE >>>>> \n " + '<' + contentString + '>');
             try{
-                List<SemEntity> semEntities = dbPediaSpotlightService.extractSemEntities(contentString).join();
+                List<SemEntity> semEntities = dbPediaSpotlightService.extractSemEntities(contentString, DBPediaSpotlightService.Language.de).join();
                 System.out.println("For string  " + contentString+ "\n ---- Entities: ----- for string ");
                 semEntities.forEach(semEntity -> System.out.println(semEntity.getSurfaceForm() + " =>  " + semEntity.getUri()));
             }

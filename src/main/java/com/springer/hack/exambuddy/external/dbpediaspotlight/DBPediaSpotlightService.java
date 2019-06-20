@@ -1,7 +1,6 @@
 package com.springer.hack.exambuddy.external.dbpediaspotlight;
 
 
-import com.google.common.collect.Lists;
 import com.springer.hack.exambuddy.external.BaseRestService;
 import com.springer.hack.exambuddy.sementity.SemEntity;
 import com.springer.hack.exambuddy.sementity.SemEntityRepository;
@@ -43,7 +42,7 @@ public class DBPediaSpotlightService extends BaseRestService {
     }
 
     @Async
-    public CompletableFuture<List<SemEntity>> extractSemEntities(String value) {
+    public CompletableFuture<List<SemEntity>> extractSemEntities(String value, Language language) {
 
         var result = new CompletableFuture<List<SemEntity>>();
         List<SemEntity> semEntities = new ArrayList<>();
@@ -51,7 +50,7 @@ public class DBPediaSpotlightService extends BaseRestService {
             result.complete(semEntities);
         }
         else{
-            var url = buildUrl("/annotate", Map.of("text", value, "confidence", properties.getConfidence()));
+            var url = buildUrl("/" + language.name() + "/annotate/" , Map.of("text", value, "confidence", properties.getConfidence()));
 
             try {
                 log.info("Calling url {}", url);
@@ -103,5 +102,9 @@ public class DBPediaSpotlightService extends BaseRestService {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         return new HttpEntity<>(headers);
+    }
+
+    public enum Language {
+        de, en
     }
 }

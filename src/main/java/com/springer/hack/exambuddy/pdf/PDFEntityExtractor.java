@@ -56,7 +56,7 @@ public class PDFEntityExtractor {
                 log.info("Processing page {} with content {}", pageNr, contentString);
                 try {
                     List<SemEntity> semEntities = dbPediaSpotlightService.extractSemEntities(contentString, language).join();
-                    if(semEntities.isEmpty()){
+                    if(!semEntities.isEmpty()){
                         pageWithEntities.setSemEntities(semEntities);
                         result.add(pageWithEntities);
                     }

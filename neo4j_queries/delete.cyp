@@ -1,1 +1,3 @@
 MATCH (n:Document) DETACH DELETE n;
+MATCH (n:Page) DETACH DELETE n;
+MATCH (n:Entity) DETACH DELETE n;

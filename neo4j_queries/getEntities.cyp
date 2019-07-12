@@ -1,0 +1,3 @@
+MATCH (d1:Script)-[:HAS_PAGE]->(p1:Page)-[:HAS_ENTITY]->(e:Entity)<-[:HAS_ENTITY]-(p2:Page)<-[:HAS_PAGE]-(d2:LearnMaterial) RETURN d1.title, p1.pageNumber, p1.text, e.surfaceForm, e.uri, p2.pageNumber, d2.title;
+MATCH p=(d1:Script)-[:HAS_PAGE]->(p1:Page)-[:HAS_ENTITY]->(e:Entity)<-[:HAS_ENTITY]-(p2:Page)<-[:HAS_PAGE]-(d2:LearnMaterial) RETURN p;
+MATCH (d1:Script)-[:HAS_PAGE]->(p1:Page)-[:HAS_ENTITY]->(e:Entity)<-[:HAS_ENTITY]-(p2:Page)<-[:HAS_PAGE]-(d2:LearnMaterial) RETURN d1.title, p1.pageNumber, p1.text, count(e), p2.pageNumber, d2.title ORDER BY count(e) DESC

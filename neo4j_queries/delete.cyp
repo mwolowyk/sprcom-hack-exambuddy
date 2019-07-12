@@ -1,0 +1,1 @@
+MATCH (n:Document) DETACH DELETE n;

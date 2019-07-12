@@ -1,9 +1,9 @@
 package com.springer.hack.exambuddy.sementity;
 
 import com.springer.hack.exambuddy.external.dbpediaspotlight.DBPediaSpotlightService;
+import com.springer.hack.exambuddy.page.Page;
 import com.springer.hack.exambuddy.pdf.PDFEntityExtractor;
-import com.springer.hack.exambuddy.pdf.PDFTextExtractor;
-import com.springer.hack.exambuddy.pdf.PageWithEntities;
+import com.springer.hack.exambuddy.pdf.PDFManager;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("api/v1/sementities")
 public class SemEntityController {
 
-    private final PDFTextExtractor pdfTextExtractor;
+    private final PDFManager pdfManager;
 
     private final DBPediaSpotlightService dbPediaSpotlightService;
 
@@ -27,8 +27,8 @@ public class SemEntityController {
     private Logger log = LoggerFactory.getLogger(SemEntityController.class);
 
 
-    public SemEntityController(PDFTextExtractor pdfTextExtractor, DBPediaSpotlightService dbPediaSpotlightService, PDFEntityExtractor pdfEntityExtractor) {
-        this.pdfTextExtractor = pdfTextExtractor;
+    public SemEntityController(PDFManager pdfManager, DBPediaSpotlightService dbPediaSpotlightService, PDFEntityExtractor pdfEntityExtractor) {
+        this.pdfManager = pdfManager;
         this.dbPediaSpotlightService = dbPediaSpotlightService;
         this.pdfEntityExtractor = pdfEntityExtractor;
     }
@@ -45,12 +45,13 @@ public class SemEntityController {
 
     @RequestMapping(value = "file", method = RequestMethod.POST)
     @ResponseBody
-    public List<PageWithEntities> getSemEntitiesFromFile(@RequestPart final MultipartFile file,
-                                                         @ApiParam(required = true, allowableValues = "de,en") @RequestParam(required = true) String language,
-                                                         @RequestParam(required = false) Integer fromPage,
-                                                         @RequestParam(required = false) Integer toPage
+    public List<Page> getSemEntitiesFromFile(@RequestPart final MultipartFile file,
+                                             @ApiParam(required = true, allowableValues = "de,en") @RequestParam(required = true) String language,
+                                             @ApiParam(required = true, allowableValues = "script,book") @RequestParam(required = true) String documentType,
+                                             @RequestParam(required = false) Integer fromPage,
+                                             @RequestParam(required = false) Integer toPage
     ) {
-        List<PageWithEntities> result = new ArrayList<>();
+        List<Page> result = new ArrayList<>();
         try {
             DBPediaSpotlightService.Language lang = DBPediaSpotlightService.Language.valueOf(language);
             System.out.println("Got language: " + lang);

@@ -7,13 +7,13 @@ public abstract class BaseEntity {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Long neo4jId;
 
-    public Long getId() {
-        return id;
+    public Long getNeo4jId() {
+        return neo4jId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setNeo4jId(Long neo4jId) {
+        this.neo4jId = neo4jId;
     }
 }

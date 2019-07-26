@@ -1,0 +1,159 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet"
+          href="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/css/main.css">
+    <style type="text/css">
+        /*.node {*/
+        /*stroke: #222;*/
+        /*stroke-width: 1.5px;*/
+        /*}*/
+        .node.book {
+            fill: #990000;
+        }
+
+        .node.originator {
+            fill: #0000b3;
+        }
+
+        .node.keyword {
+            fill: #00802b;
+        }
+
+        .node.pmc {
+            fill: #e6e600;
+        }
+
+        .node.rendition {
+            fill: #800080;
+        }
+
+        .link {
+            stroke: #999;
+            stroke-opacity: .6;
+            stroke-width: 1px;
+        }
+
+        text {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            width: 160px;
+            height: 1.2em;
+            white-space: nowrap;
+        }
+
+        .search-control {
+            min-width: 400px;
+        }
+
+        .panel {
+            max-height: 50em;
+            overflow-y: scroll;
+        }
+
+        .keywords, .pmcs {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .keyword, .pmc {
+            padding: 5px;
+            border-radius: 25px;
+            margin: 5px;
+            max-width: fit-content;
+            color: white;
+            background: #a09d9d;
+        }
+
+        .pmc {
+            background: #9a9e1a;
+        }
+    </style>
+    <title>Exambuddy</title>
+</head>
+
+<body>
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+
+<div role="navigation" class="navbar navbar-default navbar-static-top">
+    <div class="row">
+        <div class="navbar-header col-sm-6 col-md-6">
+            <div class="logo-well">
+                <a href="#">
+                    <img src="http://neo4j-contrib.github.io/developer-resources/language-guides/assets/img/logo-white.svg"
+                         alt="Neo4j World's Leading Graph Database" id="neo4j-logo">
+                    <img src="https://www.springernature.com/app-sn/public/images/logo-springernature.svg"
+                         id="sn-logo">
+                </a>
+            </div>
+            <div class="navbar-brand">
+                <div class="brand">Exambuddy</div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <ul class="nav navbar-nav">
+                <li>
+                    <form role="search" class="navbar-form" id="search">
+                        <div class="form-group">
+                            <input type="text" placeholder="Search for text"
+                                   class="form-control search-control" name="search">
+                        </div>
+                        <button class="btn btn-default" type="submit">Search</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Upload Script</div>
+                <form id="scriptUpload" action="/api/v1/documents/file" method="post" enctype="multipart/form-data">
+                    Upload your Lecture Script
+                    <input type="hidden" name="documentType" value="script"/>
+                    <input type="file" name="file" id="fileToUpload">
+                        <label for="language"> Bitte Sprache auswählen </label>
+                        <select id="language">
+                            <option value="de">DE</option>
+                            <option value="en">EN</option>
+                        </select>
+                    <input type="submit" value="Upload" name="submit">
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+
+        $("#search").submit(function(req){
+            var query = $("#search").find("input[name=search]").val();
+            $.get("api/v1/sementities/text/" + encodeURIComponent(query) + "?language=de",
+                function (data) {
+                    console.log('Search result', data);
+                }, "json");
+            return false;
+        });
+
+        $("#scriptUpload").submit(function(data){
+            console.log('Starting uploading file');
+            var file = $("#scriptUpload").find("#fileToUpload").val();
+            var success = function(result){
+                alert("success");
+                console.log(result);
+            };
+            // $.ajax({
+            //     type: "POST",
+            //     url: "/api/v1/documents/file",
+            //     data: new FormData(file),
+            //     cache: false,
+            //     contentType: false,
+            //     processData: false,
+            //     success: success
+            // });
+        });
+    })
+</script>
+</body>
+</html>
